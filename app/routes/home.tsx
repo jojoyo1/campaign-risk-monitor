@@ -8,10 +8,19 @@ import { CampaignTable } from "~/components/campaign-table";
 import { CampaignDetailSheet } from "~/components/campaign-detail-sheet";
 import type { CampaignWithRisk } from "~/types/campaign";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import {
   ShieldAlertIcon,
   DatabaseIcon,
   LoaderIcon,
   PlaneIcon,
+  InfoIcon,
+  ExternalLinkIcon,
 } from "lucide-react";
 
 export function meta({}: Route.MetaArgs) {
@@ -120,26 +129,88 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                 </p>
               </div>
             </div>
-            {campaigns.length === 0 && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleSeed}
-                disabled={isSeeding}
-              >
-                {isSeeding ? (
-                  <>
-                    <LoaderIcon className="size-3.5 animate-spin" />
-                    Seeding...
-                  </>
-                ) : (
-                  <>
-                    <DatabaseIcon className="size-3.5" />
-                    Seed Data
-                  </>
-                )}
-              </Button>
-            )}
+            <div className="flex items-center gap-2">
+              {campaigns.length === 0 && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSeed}
+                  disabled={isSeeding}
+                >
+                  {isSeeding ? (
+                    <>
+                      <LoaderIcon className="size-3.5 animate-spin" />
+                      Seeding...
+                    </>
+                  ) : (
+                    <>
+                      <DatabaseIcon className="size-3.5" />
+                      Seed Data
+                    </>
+                  )}
+                </Button>
+              )}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <InfoIcon className="size-3.5" />
+                    What am I looking at?
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[540px]">
+                  <DialogHeader>
+                    <DialogTitle className="text-lg">What am I looking at?</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-foreground font-medium">
+                      A prototype early-detection system for travel media campaigns at risk of under-delivery.
+                    </p>
+
+                    <div className="space-y-2.5">
+                      <div className="flex gap-2">
+                        <span className="text-primary font-semibold shrink-0">1.</span>
+                        <p><span className="text-foreground font-medium">KPI-driven risk detection</span> — 10 core metrics across delivery, engagement, conversion, efficiency, and pacing are computed in real-time. Pacing Index and Forecast Attainment drive severity classification (Critical / Warning / Info / Healthy) using threshold rules calibrated to goal type (IMP, CLK, BOOK, ROAS).</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <span className="text-primary font-semibold shrink-0">2.</span>
+                        <p><span className="text-foreground font-medium">Root cause diagnosis &amp; recommended actions</span> — When a signal fires, the system identifies why (e.g. CTR decline, inventory constraint, conversion drop, cost inflation) and maps each root cause to a specific remediation with expected impact and timeline — drawn from a travel-media-specific intervention framework.</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <span className="text-primary font-semibold shrink-0">3.</span>
+                        <p><span className="text-foreground font-medium">Operations-first UI</span> — A portfolio-level table sorted by risk, one-click drill-down into any campaign, and an AI analyst that synthesizes all signals into plain-language next steps. Built for campaign ops managers who need to triage fast.</p>
+                      </div>
+                    </div>
+
+                    <div className="rounded-lg border bg-muted/30 p-3 space-y-2">
+                      <p className="text-foreground font-medium text-xs uppercase tracking-wider">Under the hood</p>
+                      <p>
+                        The risk model, linear forecasting engine, goal-type-specific threshold queries, and recommended action generator all live in a single backend file. The AI analysis layer uses these computed signals as context for LLM-powered campaign diagnosis.
+                      </p>
+                      <div className="flex flex-col gap-1 pt-1">
+                        <a
+                          href="https://github.com/jojoyo1/campaign-risk-monitor"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-primary hover:underline font-medium"
+                        >
+                          <ExternalLinkIcon className="size-3" />
+                          View full source on GitHub
+                        </a>
+                        <a
+                          href="https://github.com/jojoyo1/campaign-risk-monitor/blob/main/workers/campaign-do.ts"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-primary hover:underline font-medium"
+                        >
+                          <ExternalLinkIcon className="size-3" />
+                          campaign-do.ts — forecasting, AI prompts, SQL &amp; threshold logic
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
         </div>
       </header>
