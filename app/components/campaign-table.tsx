@@ -130,7 +130,14 @@ export function CampaignTable({
       {
         id: "campaign",
         accessorFn: (row) => `${row.name} ${row.advertiser}`,
-        header: "Campaign",
+        header: () => (
+          <span>
+            Campaign{" "}
+            <span className="text-[10px] font-normal text-muted-foreground/70">
+              (click for details)
+            </span>
+          </span>
+        ),
         cell: ({ row }) => (
           <div className="min-w-[160px]">
             <div className="font-medium text-foreground leading-tight">

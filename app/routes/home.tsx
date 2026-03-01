@@ -152,7 +152,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               )}
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" size="sm">
+                  <Button variant="default" size="sm">
                     <InfoIcon className="size-3.5" />
                     What am I looking at?
                   </Button>
